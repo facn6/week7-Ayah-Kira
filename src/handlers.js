@@ -1,9 +1,9 @@
 const { readFile } = require("fs");
 const path = require("path");
 const url1 = require("url");
-const getSelectData = require("./queries/getData").getSelectData;
+// const getSelectData = require("./queries/getData").getSelectData;
 var qs = require("qs");
-const postData = require("./queries/postData.js");
+// const postData = require("./queries/postData.js");
 
 const serverError = (err, response) => {
   response.writeHead(500, "Content-Type:text/html");
