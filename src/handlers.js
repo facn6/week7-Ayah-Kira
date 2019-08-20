@@ -1,7 +1,9 @@
 const { readFile } = require("fs");
 const path = require("path");
 const url1 = require("url");
+
 const getData = require("./queries/getData").getData;
+
 var qs = require("qs");
 // const postData = require("./queries/postData.js");
 
