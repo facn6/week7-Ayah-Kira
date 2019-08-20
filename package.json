@@ -1,0 +1,26 @@
+{
+  "name": "week7-ayah-kira",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/facn6/week7-Ayah-Kira.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/facn6/week7-Ayah-Kira/issues"
+  },
+  "homepage": "https://github.com/facn6/week7-Ayah-Kira#readme",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "path": "^0.12.7",
+    "pg": "^7.12.1",
+    "qs": "^6.8.0",
+    "url": "^0.11.0"
+  }
+}
