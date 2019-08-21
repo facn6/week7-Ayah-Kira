@@ -10,7 +10,12 @@ const router = (req, res) => {
     handlers.selectionHandler(req, res);
     // } else if (req.url === "/public/node-icon.ico") {
     //   handlers.handleIcon(res);
-  } else {
+  }
+else if (req.url === '/my-handling-form-page') {
+handlers.postHandler(req,res);
+
+}
+  else {
     handlers.errorHandler(res);
   }
 };

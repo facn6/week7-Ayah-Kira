@@ -1,11 +1,11 @@
 const { readFile } = require("fs");
 const path = require("path");
-const url1 = require("url");
-
+const url = require("url");
+// const queryString=require('query-string');
 const getData = require("./queries/getData").getData;
 
 var qs = require("qs");
-// const postData = require("./queries/postData.js");
+ const postData = require("./queries/postData.js").postData;
 
 const serverError = (err, response) => {
   response.writeHead(500, "Content-Type:text/html");
@@ -99,6 +99,28 @@ const selectionHandler = (req, response) => {
   });
 };
 
+const postHandler= (request,response) => {
+let data = '';
+    request.on('data', function(chunk) {
+      data += chunk;
+    });
+
+    request.on('end', () => {
+      const {name, category, content}= qs.parse(data);
+   postData(name, category, content, (err) => {
+        if (err) {
+        return serverError(err, response);
+        } else {
+          response.writeHead(302, { Location: '/'});
+              response.end();
+            }
+          });
+        })
+
+      };
+
+
+
 // const handleIcon = response => {
 //   const filePath = path.join(__dirname, "..", url);
 //   fs.readFile(filePath, (error, file) => {
@@ -118,6 +140,7 @@ module.exports = {
   handlePublic,
   errorHandler,
   selectionHandler,
-  postEventHandler
+  postEventHandler,
+  postHandler
   // handleIcon
 };
