@@ -1,9 +1,9 @@
 const dbConnection = require('../database/db_connection.js');
 
-const postData = (name, password) => {
+const postData = (name, category, post_content, cb) => {
   dbConnection.query(
-    'INSERT INTO users (name, password) VALUES ($1, $2)',
-    [name, password],
+    'INSERT INTO posts (name, category, post_content) VALUES ($1, $2, $3)',
+    [name, category, post_content],
     (err, res) => {
       if (err) return cb(err);
       cb(null, res);
@@ -11,4 +11,4 @@ const postData = (name, password) => {
   );
 };
 
-module.exports = postData;
+module.exports ={ postData};

@@ -1,14 +1,22 @@
 const { readFile } = require("fs");
 const path = require("path");
+
 const url1 = require("url");
 const { parse } = require("cookie");
 const { sign } = require("jsonwebtoken");
 
+
+const url = require("url");
+const registerData=require("./queries/registerData.js").registerData;
+
 const getData = require("./queries/getData").getData;
 const getDataUsers = require("./queries/getData").getDataUsers;
 
-var qs = require("querystring");
-// const postData = require("./queries/postData.js")postData;
+
+var qs = require("qs");
+ const postData = require("./queries/postData.js").postData;
+
+var qs1 = require("querystring");
 
 const serverError = (err, response) => {
   response.writeHead(500, "Content-Type:text/html");
@@ -129,10 +137,76 @@ const selectionHandler = (req, response) => {
   });
 };
 
+
+const postHandler= (request,response) => {
+let data = '';
+    request.on('data', function(chunk) {
+      data += chunk;
+    });
+
+    request.on('end', () => {
+      const {name, category, content}= qs.parse(data);
+   postData(name, category, content, (err) => {
+        if (err) {
+        return serverError(err, response);
+        } else {
+          response.writeHead(302, { Location: '/'});
+              response.end();
+            }
+          });
+        })
+
+      };
+
+const register= (request,response) => {
+let data = '';
+    request.on('data', function(chunk) {
+      data += chunk;
+    });
+
+    request.on('end', () => {
+      const {username, mail, password}= qs.parse(data);
+      console.log('ff',data);
+   registerData(username, mail, password, (err) => {
+        if (err) {
+        return serverError(err, response);
+        } else {
+          response.writeHead(302, { Location: '/'});
+              response.end();
+            }
+          });
+        })
+
+      };
+
+
+
+// const handleIcon = response => {
+//   const filePath = path.join(__dirname, "..", url);
+//   fs.readFile(filePath, (error, file) => {
+//     if (error) {
+//       console.log(error);
+//       response.writeHead(500, { "Content-Type": "text/html" });
+//       response.end("<h1>Sorry, we've had a problem on our end</h1>");
+//     } else {
+//       response.writeHead(200, { "Content-Type": "image/x-icon" });
+//       response.end(file);
+//     }
+//   });
+// };
+
+
 module.exports = {
   handlerHomeRoute,
   handlePublic,
   errorHandler,
   selectionHandler,
+
   login
+
+  postEventHandler,
+  postHandler,
+  register
+  
+
 };
