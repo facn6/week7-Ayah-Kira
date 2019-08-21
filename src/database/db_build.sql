@@ -12,16 +12,25 @@ CREATE TABLE users (
 CREATE TABLE posts (
   post_id SERIAL PRIMARY KEY,
   user_id INT,
+  name VARCHAR(20) NOT NULL,
   category VARCHAR(30),
   post_content VARCHAR(300)
 );
 
 ALTER TABLE posts ADD FOREIGN KEY (user_id) REFERENCES users (user_id);
 
-INSERT INTO users (name, password) VALUES ('Ayah', 'f1b');
-INSERT INTO users (name, password) VALUES ('Kira', 'f1c');
+INSERT INTO users (name, password) VALUES
+('Ayah', 'f1b'),
+('Kira', 'f1c'),
+('Dana', 'f1d'),
+('Ghassan', 'f1e');
 
-INSERT INTO posts (user_id, category, post_content) VALUES (1, 'Go', 'Speak in english');
+INSERT INTO posts (name, category, post_content) VALUES
+('Ayah', 'Go', 'Speak in english'),
+('Kira', 'Stop', 'Eating pizza'),
+('Dana', 'Go', 'Be on time'),
+('Ghassan', 'Continue', 'Eating cookies');
+
 
 
 
