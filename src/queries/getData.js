@@ -11,6 +11,16 @@ const getData = cb => {
   });
 };
 
+const getDataUsers = cb => {
+  databaseConnection.query("SELECT * FROM users", (err, res) => {
+    if (err) {
+      cb(err);
+    } else {
+      cb(null, res.rows);
+    }
+  });
+};
+
 //Send a query
 
 // const getSelectData = (datFrom, datTo, cat, loc, cb) => {
@@ -31,6 +41,7 @@ const getData = cb => {
 // };
 
 module.exports = {
-  getData
+  getData,
+  getDataUsers
   // ,getSelectData
 };
