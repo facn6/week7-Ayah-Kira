@@ -8,6 +8,8 @@ const router = (req, res) => {
   } else if (req.url === "/posts") {
     console.log("Posts endpoint requested");
     handlers.selectionHandler(req, res);
+  } else if (req.url === "/login") {
+    handlers.login(req, res);
     // } else if (req.url === "/public/node-icon.ico") {
     //   handlers.handleIcon(res);
   } else {
