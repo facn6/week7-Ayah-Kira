@@ -15,6 +15,9 @@ else if (req.url === '/my-handling-form-page') {
 handlers.postHandler(req,res);
 
 }
+else if (req.url==='/register'){
+  handlers.register(req,res);
+}
   else {
     handlers.errorHandler(res);
   }

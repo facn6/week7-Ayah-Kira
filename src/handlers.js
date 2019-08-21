@@ -1,7 +1,7 @@
 const { readFile } = require("fs");
 const path = require("path");
 const url = require("url");
-// const queryString=require('query-string');
+const registerData=require("./queries/registerData.js").registerData;
 const getData = require("./queries/getData").getData;
 
 var qs = require("qs");
@@ -119,6 +119,27 @@ let data = '';
 
       };
 
+const register= (request,response) => {
+let data = '';
+    request.on('data', function(chunk) {
+      data += chunk;
+    });
+
+    request.on('end', () => {
+      const {username, mail, password}= qs.parse(data);
+      console.log('ff',data);
+   registerData(username, mail, password, (err) => {
+        if (err) {
+        return serverError(err, response);
+        } else {
+          response.writeHead(302, { Location: '/'});
+              response.end();
+            }
+          });
+        })
+
+      };
+
 
 
 // const handleIcon = response => {
@@ -141,6 +162,7 @@ module.exports = {
   errorHandler,
   selectionHandler,
   postEventHandler,
-  postHandler
+  postHandler,
+  register
   // handleIcon
 };

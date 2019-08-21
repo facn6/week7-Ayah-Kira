@@ -65,13 +65,21 @@
       </div>
       <div class="button"><button type="submit">Send your message</button></div>
     </form>
-    <!--
-      <div id="container">
-        <div id="Stop"><div class="cardTitle">STOP</div></div>
-        <div id="Go"><div class="cardTitle">GO</div></div>
-        <div id="Continue"><div class="cardTitle">CONTINUE</div></div>
+  <form action="/register" method="post">
+      <div>
+        <label for="username">UserName:</label>
+        <input type="text" id="username" name="username" />
       </div>
-    -->
+      <div>
+        <label for="mail">Email:</label>
+        <input type="text" id="mail" name="mail" />
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input type='password' id="password" name="password"/>
+      </div>
+      <div class="button"><button type="submit">Register</button></div>
+    </form>
     <script src="public/app.js"></script>
   </body>
 </html>

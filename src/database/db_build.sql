@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS posts CASCADE;
 CREATE TABLE users (
   user_id SERIAL PRIMARY KEY,
   name VARCHAR(20) NOT NULL,
+  email VARCHAR(50),
   password VARCHAR(500) NOT NULL
 );
 
