@@ -189,9 +189,9 @@ const cookies = (req, res) => {
     return res.end("false");
   } else {
     const { data } = parse(req.headers.cookie);
-    console.log(req.headers.cookie);
+    console.log("Headers", req.headers.cookie);
     console.log(data);
-    return verify(data, "ourSecret", err => {
+    return verify(data, "ourSecret", (err, response) => {
       if (err) {
         console.log(err);
         res.writeHead(401, {
@@ -199,10 +199,12 @@ const cookies = (req, res) => {
         });
         return res.end("false");
       } else {
+        console.log("Cookie response", response);
+        var cookieInfo = JSON.stringify(response);
         res.writeHead(200, {
           "Content-Type": "text/html"
         });
-        return res.end("true");
+        return res.end(cookieInfo);
       }
     });
   }
