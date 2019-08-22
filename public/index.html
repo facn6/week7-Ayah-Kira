@@ -19,6 +19,11 @@
         </h1>
       </div>
 
+      <div id="inform">
+        You are not logged-in. Please login or register to be able to add posts.
+        <br />
+      </div>
+
       <main></main>
 
       <div class="container">
@@ -33,7 +38,7 @@
           required
         />
 
-        <button type="submit">Login</button>
+        <button id="login" type="submit">Login</button>
         <!--
           <label>
             <input type="checkbox" checked="checked" name="remember" /> Remember
@@ -50,11 +55,11 @@
       -->
     </form>
 
-    <form action="/logout" method="POST">
+    <form id="logout" action="/logout" method="POST">
       <button type="submit">Logout</button>
     </form>
 
-    <form action="/my-handling-form-page" method="post">
+    <form id="formPost" action="/my-handling-form-page" method="post">
       <div>
         <label for="name">Name:</label>
         <input type="text" placeholder="Your user name" id="name" name="name" />
@@ -74,7 +79,8 @@
       </div>
       <div class="button"><button type="submit">Send your message</button></div>
     </form>
-    <form action="/register" method="post">
+
+    <form id="register" action="/register" method="post">
       <div>
         <label for="username">UserName:</label>
         <input type="text" id="username" name="username" />

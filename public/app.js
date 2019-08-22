@@ -76,11 +76,30 @@ function checkCookies() {
   console.log("Test Cookies");
   fetch("/cookies")
     .then(function(response) {
+      console.log(response);
       return response.json();
     })
     .then(function(parsed) {
       console.log("Cookies are:", parsed);
       var results = parsed;
+      var formPost = document.getElementById("formPost");
+      var login = document.getElementById("login");
+      var logout = document.getElementById("logout");
+      var register = document.getElementById("register");
+      var inform = document.getElementById("inform");
+
+      // console.log(form);
+
+      if (results === false) {
+        formPost.style.display = "none";
+        logout.style.display = "none";
+      } else {
+        var nameUser = results.name;
+        login.style.display = "none";
+        register.style.display = "none";
+        logout.style.display = "block";
+        inform.innerHTML = `You are logged-in as <span style="color:red"> ${nameUser} </span>`;
+      }
     });
 }
 
