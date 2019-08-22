@@ -1,31 +1,22 @@
 const dbConnection = require("../database/db_connection.js");
-const bcrypt = require("bcryptjs");
+const hashingPassword = require("../bcrypting/bcrypt.js").hashingPassword;
 
 const registerData = (username, mail, password, cb) => {
-  let hashedPassword = "";
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) {
-      return new error("there is an error");
-    } else {
-      bcrypt.hash(password, salt, (err, hash) => {
-        if (err) {
-          return new error("there is an error");
-        } else {
-          hashedPassword = hash;
-          dbConnection.query(
-            "INSERT INTO users (name, email, password) VALUES ($1, $2, $3)",
-            [username, mail, hashedPassword],
-            (err, res) => {
-              if (err) return cb(err);
-              cb(null, res);
-              console.log("ff", hashedPassword);
-              console.log(username);
-            }
-          );
-        }
-      });
-    }
+  let hashedPassword = hashingPassword(password);
+
+  hashedPassword.then(result => {
+    console.log("AYAH", result);
+    dbConnection.query(
+      "INSERT INTO users (name, email, password) VALUES ($1, $2, $3)",
+      [username, mail, result],
+      (err, res) => {
+        if (err) return cb(err);
+        cb(null, res);
+      }
+    );
   });
+
+  console.log("AYAH", hashedPassword);
 };
 
 module.exports = { registerData };
