@@ -26,7 +26,7 @@
 
       <main></main>
 
-      <div class="container">
+      <div class="container" id="cont">
         <label for="uname"><b>Username</b></label>
         <input type="text" placeholder="Enter Username" name="uname" required />
 
@@ -37,8 +37,9 @@
           name="psw"
           required
         />
-
-        <button id="login" type="submit">Login</button>
+        <div class="wrapper">
+          <button class="login" type="submit">Login</button>
+        </div>
         <!--
           <label>
             <input type="checkbox" checked="checked" name="remember" /> Remember
@@ -56,7 +57,7 @@
     </form>
 
     <form id="logout" action="/logout" method="POST">
-      <button type="submit">Logout</button>
+      <div class="wrapper"><button type="submit">Logout</button></div>
     </form>
 
     <form id="formPost" action="/my-handling-form-page" method="post">
@@ -73,11 +74,16 @@
           name="category"
         />
       </div>
-      <div>
+      <div class="post">
         <label for="msg">Message:</label>
-        <textarea id="msg" name="content"></textarea>
+
+        <textarea id="msg" name="content" required></textarea>
       </div>
-      <div class="button"><button type="submit">Send your message</button></div>
+      <div class="wrapper">
+        <div class="button">
+          <button type="submit">Send your message</button>
+        </div>
+      </div>
     </form>
 
     <form id="register" action="/register" method="post">
@@ -93,7 +99,9 @@
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" />
       </div>
-      <div class="button"><button type="submit">Register</button></div>
+      <div class="wrapper">
+        <div class="button"><button type="submit">Register</button></div>
+      </div>
     </form>
     <script src="public/app.js"></script>
   </body>

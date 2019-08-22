@@ -83,10 +83,11 @@ function checkCookies() {
       console.log("Cookies are:", parsed);
       var results = parsed;
       var formPost = document.getElementById("formPost");
-      var login = document.getElementById("login");
+      // var login = document.getElementById("login");
       var logout = document.getElementById("logout");
       var register = document.getElementById("register");
       var inform = document.getElementById("inform");
+      var cont = document.getElementById("cont");
 
       // console.log(form);
 
@@ -95,7 +96,7 @@ function checkCookies() {
         logout.style.display = "none";
       } else {
         var nameUser = results.name;
-        login.style.display = "none";
+        cont.style.display = "none";
         register.style.display = "none";
         logout.style.display = "block";
         inform.innerHTML = `You are logged-in as <span style="color:red"> ${nameUser} </span>`;

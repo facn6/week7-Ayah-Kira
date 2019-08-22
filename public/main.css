@@ -69,13 +69,19 @@ input[type="password"] {
 
 /* Set a style for all buttons */
 button {
+  width: 50%;
   background-color: #4caf50;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
   border: none;
   cursor: pointer;
-  width: 100%;
+  font-size: 16px;
+  /* display: inline-block; */
+}
+
+.wrapper {
+  text-align: center;
 }
 
 /* Add a hover effect for buttons */
@@ -105,6 +111,7 @@ img.avatar {
 /* Add padding to containers */
 .container {
   padding: 16px;
+  /* text-align: center; */
 }
 
 /* The "Forgot password" text */
@@ -135,4 +142,7 @@ span.psw {
   #container {
     flex-wrap: wrap;
   }
-}
+
+.post {
+  height: 80px;
+  }
