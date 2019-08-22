@@ -1,20 +1,20 @@
 const { readFile } = require("fs");
 const path = require("path");
+const bcrypt = require("bcryptjs");
 
 const url1 = require("url");
 const { parse } = require("cookie");
 const { sign } = require("jsonwebtoken");
-
+const { verify } = require("jsonwebtoken");
 
 const url = require("url");
-const registerData=require("./queries/registerData.js").registerData;
+const registerData = require("./queries/registerData.js").registerData;
 
 const getData = require("./queries/getData").getData;
 const getDataUsers = require("./queries/getData").getDataUsers;
 
-
 var qs = require("qs");
- const postData = require("./queries/postData.js").postData;
+const postData = require("./queries/postData.js").postData;
 
 var qs1 = require("querystring");
 
@@ -60,9 +60,10 @@ const login = (req, response) => {
     data += chunk;
   });
   req.on("end", () => {
-    const { psw, uname } = qs.parse(data);
+    const { psw, uname } = qs1.parse(data);
     console.log("Data from the FE", data);
     console.log("Parsed data from the FE", psw, uname);
+
     getDataUsers((err, res) => {
       if (err) {
         response.writeHead(500, "Content-Type:text/html");
@@ -73,41 +74,45 @@ const login = (req, response) => {
         console.log("OutputOfUsers", output);
         console.log(uname);
         console.log(res);
-        // var names = [];
         var nameCheck = res.filter(function(element) {
           return element.name === uname;
         });
         console.log(nameCheck);
         if (nameCheck.length === 0) {
           console.log("No user");
-          response.writeHead(500, "Content-Type:text/html");
+          response.writeHead(401, "Content-Type:text/html");
           response.end("<h1>No such user...<h1>");
         } else {
           console.log("Check pass", nameCheck[0].password);
-          if (nameCheck[0].password !== psw) {
-            console.log("No password");
-            response.writeHead(500, "Content-Type:text/html");
-            response.end("<h1>Inncorrect password, access denied</h1>");
-          }
-          //If the password matches to what we have in our DB:
-          //Create a token:
-          else {
-            var token = sign(
-              {
-                name: uname,
-                logged_in: true
-              },
-              "ourSecret"
-            );
-            //
-            console.log(token);
-            response.writeHead(302, {
-              "Set-Cookie": `data=${token}; HttpOnly`,
-              Location: "/"
-            });
-            console.log("Token", token);
-            return response.end();
-          }
+          console.log("Ps inserted by the user", psw);
+          bcrypt.compare(psw, nameCheck[0].password, function(err, res) {
+            console.log("Inside compare", psw, nameCheck[0].password);
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(res);
+              if (!res) {
+                console.log("No PASS");
+                response.writeHead(401, "Content-Type:text/html");
+                response.end("<h1>Inncorrect password, access denied</h1>");
+              } else {
+                var token = sign(
+                  {
+                    name: `${uname}`,
+                    logged_in: true
+                  },
+                  "ourSecret"
+                );
+                console.log(token);
+                response.writeHead(302, {
+                  "Set-Cookie": `data=${token}; HttpOnly`,
+                  Location: "/"
+                });
+                console.log("Token", token);
+                return response.end();
+              }
+            }
+          });
         }
       }
     });
@@ -137,76 +142,88 @@ const selectionHandler = (req, response) => {
   });
 };
 
+const postHandler = (request, response) => {
+  let data = "";
+  request.on("data", function(chunk) {
+    data += chunk;
+  });
 
-const postHandler= (request,response) => {
-let data = '';
-    request.on('data', function(chunk) {
-      data += chunk;
-    });
-
-    request.on('end', () => {
-      const {name, category, content}= qs.parse(data);
-   postData(name, category, content, (err) => {
-        if (err) {
+  request.on("end", () => {
+    const { name, category, content } = qs.parse(data);
+    postData(name, category, content, err => {
+      if (err) {
         return serverError(err, response);
-        } else {
-          response.writeHead(302, { Location: '/'});
-              response.end();
-            }
-          });
-        })
-
-      };
-
-const register= (request,response) => {
-let data = '';
-    request.on('data', function(chunk) {
-      data += chunk;
+      } else {
+        response.writeHead(302, { Location: "/" });
+        response.end();
+      }
     });
+  });
+};
 
-    request.on('end', () => {
-      const {username, mail, password}= qs.parse(data);
-      console.log('ff',data);
-   registerData(username, mail, password, (err) => {
-        if (err) {
+const register = (request, response) => {
+  let data = "";
+  request.on("data", function(chunk) {
+    data += chunk;
+  });
+
+  request.on("end", () => {
+    const { username, mail, password } = qs.parse(data);
+    console.log("ff", data);
+    registerData(username, mail, password, err => {
+      if (err) {
         return serverError(err, response);
-        } else {
-          response.writeHead(302, { Location: '/'});
-              response.end();
-            }
-          });
-        })
+      } else {
+        response.writeHead(302, { Location: "/" });
+        response.end();
+      }
+    });
+  });
+};
 
-      };
+const cookies = (req, res) => {
+  if (!req.headers.cookie) {
+    res.writeHead(401, {
+      "Content-Type": "text/html"
+    });
+    return res.end("false");
+  } else {
+    const { data } = parse(req.headers.cookie);
+    console.log(req.headers.cookie);
+    console.log(data);
+    return verify(data, "ourSecret", err => {
+      if (err) {
+        console.log(err);
+        res.writeHead(401, {
+          "Content-Type": "text/html"
+        });
+        return res.end("false");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "text/html"
+        });
+        return res.end("true");
+      }
+    });
+  }
+};
 
-
-
-// const handleIcon = response => {
-//   const filePath = path.join(__dirname, "..", url);
-//   fs.readFile(filePath, (error, file) => {
-//     if (error) {
-//       console.log(error);
-//       response.writeHead(500, { "Content-Type": "text/html" });
-//       response.end("<h1>Sorry, we've had a problem on our end</h1>");
-//     } else {
-//       response.writeHead(200, { "Content-Type": "image/x-icon" });
-//       response.end(file);
-//     }
-//   });
-// };
-
+const logout = (req, res) => {
+  res.writeHead(302, {
+    "Set-Cookie": "data=0; Max-Age=0",
+    Location: "/"
+  });
+  return res.end();
+};
 
 module.exports = {
   handlerHomeRoute,
   handlePublic,
   errorHandler,
   selectionHandler,
-
-  login
-
-  postEventHandler,
+  login,
   postHandler,
-  register
-  
-
+  register,
+  cookies,
+  logout
 };
